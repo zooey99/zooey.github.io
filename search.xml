@@ -38,7 +38,7 @@
       
       <categories>
           
-          <category> Javascript </category>
+          <category> 个人笔记 </category>
           
       </categories>
       
@@ -55,17 +55,11 @@
     
     <entry>
       <title>前端存储常用属性</title>
-      <link href="/2023/01/06/cookie/"/>
-      <url>/2023/01/06/cookie/</url>
+      <link href="/2023/01/06/%E5%89%8D%E7%AB%AF%E5%AD%98%E5%82%A8%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7/"/>
+      <url>/2023/01/06/%E5%89%8D%E7%AB%AF%E5%AD%98%E5%82%A8%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7/</url>
       
-        <content type="html"><![CDATA[<p><strong>背景</strong> </p><p>一、Cookie</p><p>二、localstorage</p>]]></content>
+        <content type="html"><![CDATA[<p><strong>背景</strong> </p><h3 id="一、Cookie"><a href="#一、Cookie" class="headerlink" title="一、Cookie"></a>一、Cookie</h3><h3 id="二、localstorage"><a href="#二、localstorage" class="headerlink" title="二、localstorage"></a>二、localstorage</h3>]]></content>
       
-      
-      <categories>
-          
-          <category> 个人笔记 </category>
-          
-      </categories>
       
       
         <tags>
@@ -80,8 +74,8 @@
     
     <entry>
       <title>Html5 video 标签</title>
-      <link href="/2023/01/06/h5-video/"/>
-      <url>/2023/01/06/h5-video/</url>
+      <link href="/2023/01/06/html5-video/"/>
+      <url>/2023/01/06/html5-video/</url>
       
         <content type="html"><![CDATA[<blockquote><p><strong>背景</strong> 随着 4G 的普遍以及 WiFi 的广泛使用，手机上的网速已经足够稳定和高速，以视频为主的 HTML5 也越来越普遍了，相比帧动画，视频的表现更加丰富，前段时间开发了一个以视频为主的移动端 HTML5，在这里介绍一些实践经验。</p></blockquote><h2 id="统一播放效果"><a href="#统一播放效果" class="headerlink" title="统一播放效果"></a>统一播放效果</h2><p>我们希望视频播放时可以全屏播放，没有进度条、播放按钮等与系统相关的元素，可以在视频上方增加自定义的元素（比如一个跳过按钮），类型下面的效果：<br>在不同的操作系统（主要就是 iOS 和 Android），为了达到比较统一的播放效果，分别对其进行兼容。</p><h3 id="iOS"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</h3><p>在 iOS 上，APP 都是使用的系统自带的浏览器进行页面渲染，video 播放视频的效果是统一的，只需要考虑不同的 iOS 版本是否有不一致的地方。在 iOS 上，播放视频默认会弹出一个播放器全屏播放视频，如下效果</p><p>播放器上下有的系统默认的控制栏，可以控制视频的播放进度、音量以及暂停或继续播放，播放视频时，视频会 “浮” 在页面上，页面上的所有元素都只能是在视频下面，这种效果显然不是我们想要的。 但好在 iOS 10 Safari 中，video 新增了 playsinline 属性，可以使视频内联播放。</p><p>在 webkit 的 blog 上提到</p><blockquote><p>A note about the playsinline attribute: this attribute has recently been added to the HTML specification, and WebKit has adopted this new attribute by unprefixing its legacy webkit-playsinline attribute. This legacy attribute has been supported since iPhoneOS 4.0, and accordance with our updated unprefixing policy, we’re pleased to have been able to unprefix webkit-playsinline.</p></blockquote><p>iOS 10 之前的版本支持 webkit-playsinline，但是加了这个属性后，在 iOS 9 的上出现只能听到声音不能看到画面的问题，最后使用的标签代码</p><p><video id="video" class="video" preload="auto" playsinline src="http://wqs.jd.com/promote/superfestival/superfestival.mp4" width="1" height="1" type="video/mp4"></video><br>然后再加上这个库 iphone-inline-video 一起使用。</p><h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3><p>在 Android 上，因为各个软件使用的浏览器渲染引擎不一样，所以视频播放的效果差异也很大，这里主要以微信为主。微信使用的是自带的渲染引擎 TBS，默认的播放效果</p><p>在播放器的下方也是会有控制栏，视频也会 “浮” 在页面上。而 Android 是不支持 playsinline 属性使视频内联播放的。但是，如果你看过一些腾讯的视频类 HTML5，会发现它们在微信里是可以内联播放的，而这个功能是需要申请加入白名单的。</p><p>不过新版的 TBS 内核（&gt;=036849）支持一个叫 同层播放器 的视频播放器，这个不需要申请白名单，只需给 video 设置两个属性 x5-video-player-type=”h5” 和 x5-video-player-fullscreen=”true”，播放效果</p><p>当点击左上角的箭头的时，会退出播放</p><p>退出播放时，我们需要做相应的处理。TBS 有提供相应的事件，不过不同的版本有一点差异</p><p>![img.png](source/_posts/images/Html5 Video标签/img.png)</p><pre data-enlighter-language="">document.getElementById('video').addEventListener("x5videoexitfullscreen", function(){alert("exit fullscreen")})document.getElementById('video').addEventListener("x5videoenterfullscreen", function(){alert("enter fullscreen")})</pre><p>在对话框中发送 //gettbs 可以查看相关信息，tbsCoreVersion 就是当前安装的 TBS 内核版本。</p><p>video 的事件<br>video 支持的事件很多，但在有些事件在不同的系统上跟预想的表现不一致，在尝试比较之后，使用 timeupdate 和 ended 这两个事件基本可以满足需求</p><pre data-enlighter-language="">video.addEventListener('timeupdate', function (e) {console.log(video.currentTime) // 当前播放的进度})video.addEventListener('ended', function (e) {// 播放结束时触发})</pre><p>视频居中<br>视频的宽高比是固定的，而手机的屏幕宽高比则不是，所以，为了让观看到的视频的体验尽可能一致，以宽度为先，进行适配</p><pre data-enlighter-language="">function handleResize() {var sWidth = 9var sHeight = 16var width = window.innerWidthvar height = window.innerHeightvar marginTop = height - (width * sHeight) / sWidthmarginTop = Math.round(marginTop)if (marginTop < -2) {video.$wrapper.css('marginTop', marginTop / 2 + 'px')} else {video.$wrapper.css('marginTop', '0')}}</pre>]]></content>
       
@@ -95,7 +89,51 @@
       
         <tags>
             
-            <tag> Html </tag>
+            <tag> Html5 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Rest API 释义</title>
+      <link href="/2022/07/26/hello-world/"/>
+      <url>/2022/07/26/hello-world/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>Repesentional State Transfer 直译表现层状态转换  ，是一种架构风格、设计风格而不是标准。只是提供了一组设计原则和约束条件。<br>主要用于服务端和客户端交互类软件，基于这个风格设计的软件可以更简洁，更有层次，更易于实现缓存等机制。</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> 个人笔记 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>重学前端</title>
+      <link href="/2022/06/26/%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF/"/>
+      <url>/2022/06/26/%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF/</url>
+      
+        <content type="html"><![CDATA[<h2 id="前端工程师成长之路"><a href="#前端工程师成长之路" class="headerlink" title="前端工程师成长之路"></a>前端工程师成长之路</h2><blockquote><p>公司业务并不复杂，也没有技术积累，所以自身水平其实并不高，可以说还处于非常初级的阶段。</p></blockquote><h4 id="两个视角"><a href="#两个视角" class="headerlink" title="两个视角"></a>两个视角</h4><p>1.立足标准，系统性总结和整理前端知识，建立自己的认知和方法论；<br>2.放眼团队，从业务和工程角度思考前端团队的价值和发展需要</p><h4 id="三个目标"><a href="#三个目标" class="headerlink" title="三个目标"></a>三个目标</h4><p>1.摸索出适合自己的前端学习方法<br>2.帮助你建立起前端技术的知识架构<br>3.让你理解前端技术背后的核心思想</p><h4 id="二个方法"><a href="#二个方法" class="headerlink" title="二个方法"></a>二个方法</h4><ol><li>建立知识架构<blockquote><p>知识架构：理解为知识的目录或者索引，他能帮助我们把零散的知识组织起来，也能帮助我们发现知识上的盲区</p></blockquote></li><li>追本溯源<blockquote><p>其实关注技术提出的背景，关注原始的论文或者文章，关注作者说的话</p></blockquote></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 独立思考 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 前端思考 </tag>
             
         </tags>
       
@@ -108,7 +146,7 @@
       <link href="/2021/06/26/Vue%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
       <url>/2021/06/26/Vue%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</url>
       
-        <content type="html"><![CDATA[<h3 id="131213"><a href="#131213" class="headerlink" title="131213"></a>131213</h3><p>131213131213131213131213</p>]]></content>
+        <content type="html"><![CDATA[<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="-1"><a href="#-1" class="headerlink" title=""></a></h3><h3 id="-2"><a href="#-2" class="headerlink" title=""></a></h3>]]></content>
       
       
       <categories>
@@ -118,24 +156,61 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> vue </tag>
+            
+        </tags>
+      
     </entry>
     
     
     
     <entry>
-      <title>重学前端</title>
-      <link href="/2021/06/26/%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF/"/>
-      <url>/2021/06/26/%E9%87%8D%E5%AD%A6%E5%89%8D%E7%AB%AF/</url>
+      <title>mysql| 忘记密码怎么办</title>
+      <link href="/2021/03/26/mysql%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E6%80%8E%E4%B9%88%E5%8A%9E/"/>
+      <url>/2021/03/26/mysql%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E6%80%8E%E4%B9%88%E5%8A%9E/</url>
       
-        <content type="html"><![CDATA[<h3 id="131213"><a href="#131213" class="headerlink" title="131213"></a>131213</h3>]]></content>
+        <content type="html"><![CDATA[<h2 id="mysql忘记密码怎么办？"><a href="#mysql忘记密码怎么办？" class="headerlink" title="mysql忘记密码怎么办？"></a>mysql忘记密码怎么办？</h2><blockquote><p>**Mysql 版本 8.0.13 环境 MAC **</p></blockquote><h3 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件:"></a>前置条件:</h3><p>①停止MySQL的服务，打开系统的偏好设置，找到MySQL 进去后，点击Stop MySQL Server;<br>②打开两个终端；</p><h3 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h3><p>一、（终端1）执行 sudo /usr/local/mysql/bin/mysqld_safe –skip-grant-tables</p><p>遇到问题1： mysqld_safe A mysqld process already exists</p><pre data-enlighter-language="undefined">           解决方案：1.ps aux |grep mysql   查看mysql的进程。                        2.通过kill -9 pid杀死进程。（如遇到 kill: (XXX) - Operation not permitted,使用sudo kill -9 pid ）                                                3.重启mysql</pre><p>遇到问题2：</p><p>二、（终端2）执行 sudo /usr/local/mysql/bin/mysql -u root 输入电脑密码，进入mysql;</p><pre data-enlighter-language="undefined">    ① 先执行use mysql;    ② 更新密码：ALTER USER root@localhost IDENTIFIED WITH mysql_native_password BY '你的密码’; 成功过后，执行quit;    ③ 关闭终端2；（*）    ④ mysql -u root -p 使用新密码就可以使用了 </pre><p><img src="img_3.png" alt="img_3.png"></p><p><img src="img_4.png" alt="img_4.png"></p><p>补充：由于MySQL5.7和之前的用户修改密码方式：</p><p>第一种：UPDATE语句</p><p>UPDATE  mysql.user  SET password=PASSWORD(‘你的密码’) WHERE user=’root’;</p><p>MySQL 5.7.6版本以下，才能使用此方法来修改密码。从MySQL 5.7.6版本起，user表仅使用authentication_string列代替之前版本中的password列来存储密码。此外，它删除了password列。</p><p>UPDATE mysql.user SET authentication_string=PASSWORD(‘新密码’) WHERE User=’root’;</p><p>第二种：SET PASSWORD语句</p><p>SET PASSWORD FOR ‘dbadmin’@’localhost’ = PASSWORD(‘你的密码’);</p><p>请注意，从MySQL 5.7.6版本开始，MySQL不推荐使用此语法，可能会在将来的版本中将其删除。作为一个代替的解决方案，它使用明文密码如下：</p><p>SET PASSWORD FOR ‘dbadmin’@’localhost’ = ‘你的密码’;</p><p>以上2种方法在MySQL8.0以后版本中将不能使用，如果使用了将会导致在正确修改密码是报如下错误：</p><p>解决方法:执行清空密码：UPDATE mysql.user SET authentication_string=’’ WHERE User=‘root’;然后执行图2</p>]]></content>
       
       
       <categories>
           
-          <category> 独立思考 </category>
+          <category> 个人笔记 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> mysql </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>mysql| 连接错误</title>
+      <link href="/2021/03/26/mysql%E9%93%BE%E6%8E%A5%E9%94%99%E8%AF%AF%E6%B8%85%E5%8D%95/"/>
+      <url>/2021/03/26/mysql%E9%93%BE%E6%8E%A5%E9%94%99%E8%AF%AF%E6%B8%85%E5%8D%95/</url>
+      
+        <content type="html"><![CDATA[<h2 id="mysql连接"><a href="#mysql连接" class="headerlink" title="mysql连接"></a>mysql连接</h2><pre data-enlighter-language="">mysql -u root -p</pre><ul><li>错误&gt;坑1 密码/账号问题</li></ul><p><img src="img_1.png" alt="img_1.png"><br>– tips<br>Error 1045(28000)  YES.  表示密码输入错误<br>Error 1045(28000)  No   表示没有输入密码</p><ul><li>错误&gt;坑2 Can’t connect to Mysql server through socket ‘/tmp/mysql.sock’<pre data-enlighter-language="">sudo ./support-files/mysql.server start</pre><img src="img_2.png" alt="img_2.png"></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 爬坑手册 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> mysql </tag>
+            
+        </tags>
       
     </entry>
     
@@ -165,7 +240,7 @@
       <link href="/2020/01/06/ES6%E5%BC%82%E6%AD%A5%E5%9B%9E%E8%B0%83%E5%9C%B0%E7%8B%B1/"/>
       <url>/2020/01/06/ES6%E5%BC%82%E6%AD%A5%E5%9B%9E%E8%B0%83%E5%9C%B0%E7%8B%B1/</url>
       
-        <content type="html"><![CDATA[<p><strong>背景</strong></p><p>一、anysc /await</p>]]></content>
+        <content type="html"><![CDATA[]]></content>
       
       
       <categories>
@@ -174,6 +249,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> ES6 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -189,21 +270,27 @@
       
       <categories>
           
-          <category> 问题搜集 </category>
+          <category> 避坑小指南 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> php </tag>
+            
+        </tags>
       
     </entry>
     
     
     
     <entry>
-      <title>Package.json 中 browser ,module, main</title>
-      <link href="/2019/11/06/Package%20json/"/>
-      <url>/2019/11/06/Package%20json/</url>
+      <title>browser ,module, main优先级</title>
+      <link href="/2019/11/06/PackageJson/"/>
+      <url>/2019/11/06/PackageJson/</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<h2 id="browser-VS-module-VS-main"><a href="#browser-VS-module-VS-main" class="headerlink" title="browser VS module VS main"></a>browser VS module VS main</h2><blockquote><p>我们需要开发一个 npm 包同时兼容支持 web端 和 server 端，需要在不同环境下加载npm包不同的入口文件，显然一个 main 字段已经不能够满足我们的需求，这就衍生出来了 module 与 browser 字段。</p></blockquote><p>前端开发中使用到 npm 包那可算是家常便饭，而使用到 npm 包总免不了接触到 package.json 包配置文件。</p><h3 id="文件优先级"><a href="#文件优先级" class="headerlink" title="文件优先级"></a>文件优先级</h3><p>当存在 index.mjs 和 index.js 这种同名不同后缀的文件时，import  ‘./index’ 或者 require(‘./index’) 是会优先加载 index.mjs 文件的。<br>也就是说，优先级 mjs &gt; js</p><p>定义</p><ul><li>main : 定义了 npm 包的入口文件，browser 环境和 node 环境均可使用</li><li>module : 定义 npm 包的 ESM 规范的入口文件，browser 环境和 node 环境均可使用</li><li>browser : 定义 npm 包在 browser 环境下的入口文件</li></ul>]]></content>
       
       
       <categories>
@@ -212,6 +299,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> vue </tag>
+            
+        </tags>
       
     </entry>
     
